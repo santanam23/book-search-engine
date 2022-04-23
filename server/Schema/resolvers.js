@@ -25,14 +25,7 @@ const resolvers = {
             return User.findOne({ username })
               .select("-__v -password")
               .populate("books");
-          },
-          books: async (parent, { username }) => {
-            const params = username ? { username } : {};
-            return Book.find(params).sort({ createdAt: -1 });
-          },
-          book: async (parent, { _id }) => {
-            return Book.findOne({ _id });
-          },
+          }
     },
 
     Mutation: {
@@ -66,15 +59,25 @@ const resolvers = {
                    { $push: {savedBooks: [bookSchema]}},
                    { new: true}
                 );
+                // return user type
                 return updatedUser;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
 
-        deleteBook: async (parent, { bookId }, context) => {
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                  { _id: context.user._id },
+                  { $pull: { books: bookId } },
+                  { new: true }
+                ).populate('books');
+            
             return updatedUser;
         }
     },
+},
+
 }
 
 module.exports = resolvers;
