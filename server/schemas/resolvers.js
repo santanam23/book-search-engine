@@ -1,8 +1,7 @@
 const { User } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
-const { deleteBook } = require("../controllers/user-controller");
-const bookSchema = require("../models/Book");
+
 
 const resolvers = {
     Query: {
@@ -59,12 +58,12 @@ const resolvers = {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                   { _id: context.user._id },
-                  { $pull: { books: bookId } },
+                  { $pull: { savedBooks: bookId } },
                   { new: true }
                 ).populate('books');
             
             return updatedUser;
-        }
+        } throw new AuthenticationError('You need to be logged in!');
     },
 },
     User:{
