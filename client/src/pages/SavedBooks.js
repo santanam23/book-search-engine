@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { saveBook } from '../utils/mutations';
-import { removeBook } from '../utils/mutations';
+import { GET_ME } from '../utils/queries';
+import { REMOVE_Book } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { loading, data } = useQuery(Query);
-  const [saveBook, { error }] = useMutation(saveBook);
-  const [removeBook, { error }] = useMutation(removeBook);
+  const { loading, data } = useQuery(GET_ME);
+  
+  const [removeBook, { err }] = useMutation(REMOVE_Book);
 
   const userData = data?.me || {};
   // use this to determine if `useEffect()` hook needs to run again
@@ -24,23 +24,18 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook(bookId, token);
+      const { data } = await removeBook({
+        variables: { bookId },
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
       removeBookId(bookId);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (!loading) {
     return <h2>LOADING...</h2>;
   }
 
