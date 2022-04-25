@@ -41,11 +41,11 @@ const resolvers = {
         return { token, user };
         },
 
-        saveBook: async (parent, { bookId }, context) => {
+        saveBook: async (parent, { bookId}, context) => {
             if (context.user) {
                 const updatedUser = await user.findAndUpdate(
                    { _id: context.user._id},
-                   { $push: {savedBooks: [bookSchema]}},
+                   { $push: {savedBooks: bookId}},
                    { new: true}
                 );
                 // return user type
