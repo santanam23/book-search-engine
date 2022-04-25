@@ -15,6 +15,16 @@ const resolvers = {
             }
             throw new AuthenticationError("Not logged in");
           },
+          users: async () => {
+            return User.find()
+              .select("-__v -password")
+              .populate("books");
+          },
+        user: async (parent, { username }) => {
+            return User.findOne({ username })
+              .select("-__v -password")
+              .populate("books");
+          }
     },
 
     Mutation: {
@@ -64,20 +74,9 @@ const resolvers = {
             
             return updatedUser;
         } throw new AuthenticationError('You need to be logged in!');
+        },
     },
-},
-    User:{
-        users: async () => {
-            return User.find()
-              .select("-__v -password")
-              .populate("books");
-          },
-        user: async (parent, { username }) => {
-            return User.findOne({ username })
-              .select("-__v -password")
-              .populate("books");
-          }
-},
+
 }
 
 module.exports = resolvers;

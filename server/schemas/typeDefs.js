@@ -22,6 +22,8 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    users: [User]
+    user(username: String!): User
   }
   type Auth {
     token: ID!
@@ -33,11 +35,6 @@ const typeDefs = gql`
     saveBook(updatedUser: String!): Book
     removeBook(bookId: ID!, updatedUser: String!): Book
   }  
-
-  type User {
-    users: [User]
-    user(username: String!): User
-  }
 `;
 
 module.exports = typeDefs;
