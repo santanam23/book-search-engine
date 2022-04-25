@@ -1,6 +1,7 @@
 {
   "name": "googlebooks-app",
   "version": "1.0.0",
+  "proxy": "http://localhost:3001",
   "description": "",
   "main": "server/server.js",
   "scripts": {
@@ -16,6 +17,7 @@
     "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "apollo-server-express": "^2.15.0"
+    "apollo-server-express": "^2.15.0",
+    "mongoose": "^6.3.1"
   }
 }
