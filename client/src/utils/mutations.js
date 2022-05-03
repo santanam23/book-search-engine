@@ -24,7 +24,7 @@ export const ADD_USER = gql`
   }
 `;
 
-export const Save_Book = gql`
+export const SAVE_BOOK = gql`
   mutation saveBook($id: ID!) {
     saveBook(bookId: $id) {
       _id
@@ -37,7 +37,7 @@ export const Save_Book = gql`
   }
 `;
 
-export const REMOVE_Book = gql`
+export const REMOVE_BOOK = gql`
   mutation removeBook($id: ID!) {
     removeBook(bookid: $id) {
       _id
